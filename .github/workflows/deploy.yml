@@ -9,16 +9,23 @@ on:
         required: true
         type: string
 
+env:
+  APP_ENV: ${{ inputs.env }}
+
 jobs:
   deploy:
     name: Deploy - ${{ inputs.env }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    env:
+      APP_ENV: ${{ env.APP_ENV }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Deploy to Kubernetes
         uses: ./.github/actions/deploy-k8s
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
           env: ${{ inputs.env }}

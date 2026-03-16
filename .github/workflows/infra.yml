@@ -9,11 +9,16 @@ on:
         required: true
         type: string
 
+env:
+  APP_ENV: ${{ inputs.env }}
+
 jobs:
   provision:
     name: Provision infra - ${{ inputs.env }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.env }}
+    env:
+      APP_ENV: ${{ env.APP_ENV }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
